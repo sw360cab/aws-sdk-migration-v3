@@ -1,0 +1,6 @@
+.DS_Store
+*.code-workspace
+.vscode
+*.log
+node_modules/
+out/
