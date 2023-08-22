@@ -1,12 +1,11 @@
 import fs from 'node:fs';
-import { PassThrough } from 'node:stream';
-import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
-import { Upload } from "@aws-sdk/lib-storage";
+import { PassThrough, Readable } from 'node:stream';
+import AWS from 'aws-sdk';
 
-import {initAws, region} from './init.js';
+import {initAws} from './init.js';
 // setup AWS SDK
-const awsConfigEnv = initAws();
-const S3 = new S3Client({region, credentials: awsConfigEnv});
+initAws();
+const S3 = new AWS.S3();
 
 /**
  * Upload to S3 piping file stream read to s3.
@@ -18,19 +17,14 @@ const S3 = new S3Client({region, credentials: awsConfigEnv});
 const uploadToS3 = (filePath, bucket, key) => {
   const s3Stream = new PassThrough();
   // pipe file and s3 stream to upload
-  fs.createReadStream(filePath, {highWaterMark: 1024 * 16}).pipe(s3Stream);
+  fs.createReadStream(filePath, { highWaterMark: 1024 * 16 }).pipe(s3Stream);
   
-  const upload = new Upload({
-    client: S3,
-    params: {
-      Bucket: bucket,
-      Key: key,
-      Body: s3Stream,
-    }
-  });
-
-  return upload.done()
-  .then(_ => `${bucket}/${key}`)
+  return S3.upload({
+    Bucket: bucket,
+    Key: key,
+    Body: s3Stream
+  }).promise()
+  .then(() => `${bucket}/${key}`)
   .catch(e => {
     console.error("unable to upload", e);
   })
@@ -46,10 +40,9 @@ const uploadToS3 = (filePath, bucket, key) => {
   */
 const basicDownload = function(bucket, key, destPath) {
   const params = { Bucket: bucket, Key: key };
-  
-  return S3.send(new GetObjectCommand(params))
-  .then(async (download_) => {
-    download_.Body.pipe(new fs.createWriteStream(destPath));
+  return S3.getObject(params).promise()
+  .then((download_) => {
+    Readable.from(download_.Body).pipe(new fs.createWriteStream(destPath));
   }).catch(e => {
     console.error("unable to download", e);
   })

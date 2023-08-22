@@ -10,7 +10,7 @@ const outFolder = "out";
   const downloadPath = outFolder + path.sep + "download.txt";
   const objectKey = uploadPath;
   
-  fs.mkdirSync(outFolder, {recursive: true});
+  fs.mkdirSync(outFolder, {recursive:true});
   await new Promise((resolve, reject) => {
     const ws = fs.createWriteStream(uploadPath);
     ws.write('ok', () => ws.end());

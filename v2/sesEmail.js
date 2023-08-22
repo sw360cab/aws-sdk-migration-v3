@@ -1,10 +1,11 @@
-import { SESClient, SendEmailCommand }  from '@aws-sdk/client-ses';
-import {initAws, region} from './init.js';
+import AWS from 'aws-sdk';
+import {initAws} from './init.js';
 
 // setup AWS SDK
-const awsConfigEnv = initAws();
+initAws();
+const SES = new AWS.SES()
+
 const adminMail = "me@example.com>";
-const SES = new SESClient({region, credentials: awsConfigEnv})
 
 const sendEmail = function(mailData) {
   var params = {
