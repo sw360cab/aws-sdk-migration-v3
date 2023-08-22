@@ -1,7 +1,7 @@
 {
-  "name": "asw-sdk-v2-example",
+  "name": "asw-sdk-v3-example",
   "version": "1.0.0",
-  "description": "",
+  "description": "Example of migration from AWS sdk v2 to v3",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,12 +14,18 @@
     "sdk",
     "s3",
     "ses",
+    "v3",
     "v2"
   ],
+  "main": "main.js",
   "type": "module",
   "author": "Sergio Matone <sergio.matone at minimalgap.com>",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.912.0"
+    "aws-sdk": "^2.912.0",
+    "@aws-sdk/client-s3": "^3.332.0",
+    "@aws-sdk/client-ses": "^3.332.0",
+    "@aws-sdk/credential-providers": "^3.332.0",
+    "@aws-sdk/lib-storage": "^3.332.0"
   }
 }

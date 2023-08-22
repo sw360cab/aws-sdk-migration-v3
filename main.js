@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import {uploadToS3, basicDownload} from './s3Utils.js';
+import {uploadToS3, basicDownload} from './v3/s3Utils.js';
+// import {uploadToS3, basicDownload} from './v2/s3Utils.js';
 
 const BUCKET_NAME = process.env.BUCKET || "aws.blog.minimalgap.com"; 
 const outFolder = "out";
@@ -10,7 +11,7 @@ const outFolder = "out";
   const downloadPath = outFolder + path.sep + "download.txt";
   const objectKey = uploadPath;
   
-  fs.mkdirSync(outFolder, {recursive:true});
+  fs.mkdirSync(outFolder, {recursive: true});
   await new Promise((resolve, reject) => {
     const ws = fs.createWriteStream(uploadPath);
     ws.write('ok', () => ws.end());

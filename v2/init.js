@@ -3,7 +3,7 @@ import AWS from 'aws-sdk';
 
 import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const awsConfigPath = process.env.AWS_CONFIG_FILE || path.join(__dirname,'./secrets/aws/config.json');
+const awsConfigPath = process.env.AWS_CONFIG_FILE || path.join(__dirname,'/../secrets/aws/config.json');
 
 export function initAws () {
   // if env variables are not provided

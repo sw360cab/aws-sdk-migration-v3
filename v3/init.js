@@ -4,8 +4,8 @@ import { fromIni } from "@aws-sdk/credential-providers";
 import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const awsCredentialsPath = process.env.AWS_SHARED_CREDENTIALS_FILE || path.join(__dirname,'./secrets/aws/credentials');
-const awsConfigPath = process.env.AWS_CONFIG_FILE || path.join(__dirname,'./secrets/aws/config');
+const awsCredentialsPath = process.env.AWS_SHARED_CREDENTIALS_FILE || path.join(__dirname,'/../secrets/aws/credentials');
+const awsConfigPath = process.env.AWS_CONFIG_FILE || path.join(__dirname,'/../secrets/aws/config');
 
 export function initAws () {
   // if env variables are not provided
