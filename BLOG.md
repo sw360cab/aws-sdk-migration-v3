@@ -22,16 +22,17 @@ npm update
 I achieved a consistent result. Spoiler: I can state that because I have a solid unit/integration test base.
 But then I noticed a warning:
 
-> NOTE: We are formalizing our plans to enter AWS SDK for JavaScript (v2) into maintenance mode in 2023.\
-  Please migrate your code to use AWS SDK for JavaScript (v3).
+> _NOTE: We are formalizing our plans to enter AWS SDK for JavaScript (v2) into maintenance mode in 2023.
+  Please migrate your code to use AWS SDK for JavaScript (v3)._
 
 After digging into my code and googling a little bit, I found out that I was still using AWS SDK v2 throughout all the code. After a moment to recover from the loathing of this news, I branched and started to imagine how painful this journey would have been.
 
 *Note: AWS provides an automatic tool to migrate code from v2 to v3: [Migrating your code to SDK for JavaScript V3 - AWS SDK for JavaScript](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/migrating-to-v3.html). Of course I preferred the hard and painful way.*
 
 It turns out that it wasn't much to migrate. I will go through the changes soon, but the key breaking changes are:
-SDK library is now split into dedicated libraries instead of importing the whole SDK and then initializing the required service
-Configuration can be done from ini files or local AWS Cli configuration
+
+* SDK library is now split into dedicated libraries instead of importing the whole SDK and then initializing the required service.
+* Configuration can be done from ini files or local AWS CLI configuration.
 
 ## Migration in details
 
@@ -166,11 +167,13 @@ The main AWS service I leverage in my codebase is S3 to send/retrieve data to/fr
 Couple remarks:
 
 * in v2 to achieve a promise from a client method, a further `promise()` method should be called. In v3 the client methods tend to return natively Promises.
-* In the following example I used native Node.js `Passthrough` stream. It is almost useless when using a file read stream directly, but I left it as a reminder because it is common in most use cases, especially when files will be uploaded through an HTTP POST. These HTTP requests in Node.js are not pure readable streams but usually an object inheriting from the Node.js `stream` class, implementing methods like `write`. Passthrough streams allow passing data coming from an HTTP connection directly to the bucket without having to store them in local memory, meanwhile.
+* In the following example I used native Node.js `Passthrough` stream. It is almost useless when using a file read stream directly, but I left it as a reminder because it is common in most use cases, especially when files will be uploaded through an HTTP POST.
+
+    ⚠️ _These HTTP requests in Node.js are not pure readable streams but usually an object inheriting from the Node.js `stream` class, implementing methods like `write`. Passthrough streams allow passing data coming from an HTTP connection directly to the bucket without having to store them in local memory, meanwhile._
 
 #### S3 Upload
 
-In v2 I used to upload an “object” like that:
+In v2 I used to upload an “object” into a bucket like that:
 
 ```javascript
 import AWS from 'aws-sdk';
@@ -219,7 +222,7 @@ const uploadToS3 = (filePath, bucket, key) => {
 };
 ```
 
-* In v3 the upload part is lead by a dedicated SDK library: `lib-storage`, which provides an `Upload` class. Its constructor returns an `EventEmitter` whereas the `done()` method returns a *Promise* which successfully resolves when the upload to S3 bucket has finished.
+* In v3 the upload part is lead by a dedicated SDK library: `lib-storage`, which provides an `Upload` class. Its constructor returns an `EventEmitter` whereas the `done()` method returns a _Promise_ which successfully resolves when the upload to S3 bucket has finished.
 
 #### S3 Download
 
