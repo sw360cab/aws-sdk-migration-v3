@@ -1,6 +1,6 @@
 # Migrating AWS SDK from v2 to v3
 
-> Disclaimer: Sample of code described here can be found at [sw360cab/aws-sdk-migration-v3](https://github.com/sw360cab/aws-sdk-migration-v3)
+> Pubished in [dev.to](https://dev.to/sw360cab/migrating-aws-sdk-from-v2-to-v3-for-s3-32lh)
 
 Short time ago, I found myself in the very rare situation where you can dedicate some time slots to library upgrades in any of your projects. The purists will blame me for this “rare” adjective and bad practice, but even with all the good intentions, to me it is not so common to reserve time for this activity.
 This makes me often feel like a lazy and bad software engineer, but breaking changes usually kills me.
